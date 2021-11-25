@@ -4,7 +4,8 @@ const AdmZip = require('adm-zip')
 const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
-const { exec } = require("child_process");
+const { exec } = require("child_process")
+
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
