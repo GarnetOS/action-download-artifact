@@ -4,7 +4,7 @@ const AdmZip = require('adm-zip')
 const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
-
+const { exec } = require("child_process");
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
@@ -143,8 +143,8 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-
-            const adm = new AdmZip(Buffer.from(zip.data))
+            exec("wget -O artifact.zip\""+zip.url+"\"")
+            const adm = new AdmZip("artifact.zip")
 
             adm.getEntries().forEach((entry) => {
                 const action = entry.isDirectory ? "creating" : "inflating"
@@ -154,6 +154,7 @@ async function main() {
             })
 
             adm.extractAllTo(dir, true)
+                exec("rm artifact.zip")
         }
     } catch (error) {
         core.setFailed(error.message)
