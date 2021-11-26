@@ -153,7 +153,7 @@ async function main() {
                 console.log('exec error: ' + error);
             }
             })
-            //await new Promise(resolve => setTimeout(resolve, 20000));
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const adm = new AdmZip("artifact.zip")
         
             adm.getEntries().forEach((entry) => {
