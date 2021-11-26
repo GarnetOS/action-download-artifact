@@ -146,7 +146,13 @@ async function main() {
             fs.mkdirSync(dir, { recursive: true })
             exec("wget \""+zip.url+"\" --output-document=artifact.zip")
             console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
-            console.log(exec("ls -l"));
+            exec("ls -l",function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+            })
             const adm = new AdmZip("artifact.zip")
 
             adm.getEntries().forEach((entry) => {
