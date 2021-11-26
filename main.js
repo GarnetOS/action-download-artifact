@@ -145,7 +145,7 @@ async function main() {
 
             fs.mkdirSync(dir, { recursive: true })
             exec("wget -o artifact.zip \""+zip.url+"\"")
-            console.log("wget -o artifact.zip \""+zip.url+"\"")
+            console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
             const adm = new AdmZip("artifact.zip")
 
             adm.getEntries().forEach((entry) => {
@@ -156,7 +156,7 @@ async function main() {
             })
 
             adm.extractAllTo(dir, true)
-                exec("rm artifact.zip")
+            exec("rm artifact.zip")
         }
     } catch (error) {
         core.setFailed(error.message)
