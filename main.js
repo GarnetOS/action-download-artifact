@@ -153,8 +153,9 @@ async function main() {
                 console.log('exec error: ' + error);
             }
             })
+            await sleep(20000)    
             const adm = new AdmZip("artifact.zip")
-
+        
             adm.getEntries().forEach((entry) => {
                 const action = entry.isDirectory ? "creating" : "inflating"
                 const filepath = pathname.join(dir, entry.entryName)
