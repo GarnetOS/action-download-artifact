@@ -144,7 +144,7 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            exec("wget \""+zip.url+"\" --output-document=artifact.zip")
+            await exec("wget \""+zip.url+"\" --output-document=artifact.zip")
             console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
@@ -153,7 +153,7 @@ async function main() {
                 console.log('exec error: ' + error);
             }
             })
-            await new Promise(resolve => setTimeout(resolve, 20000));
+            //await new Promise(resolve => setTimeout(resolve, 20000));
             const adm = new AdmZip("artifact.zip")
         
             adm.getEntries().forEach((entry) => {
