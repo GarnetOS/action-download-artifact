@@ -144,7 +144,7 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            exec("wget -o artifact.zip \""+zip.url+"\"")
+            exec("wget \""+zip.url+"\" --output-document=artifact.zip")
             console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
             const adm = new AdmZip("artifact.zip")
 
