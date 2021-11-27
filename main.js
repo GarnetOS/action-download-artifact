@@ -158,7 +158,7 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            execSync("wget \""+zip.url+"\" --output-document=artifact.zip")
+            execSync("wget \""+zip.url+"\" --output-document="+artifact.name+".zip")
             //console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
             //os.execCommand('wget \"'+zip.url+"\" --output-document="+artifact.name+".zip", function (returnvalue) {
             // Here you can get the return value
