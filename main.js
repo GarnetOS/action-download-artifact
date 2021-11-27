@@ -180,8 +180,11 @@ async function main() {
             })
 
             adm.extractAllTo(dir, true)*/
-            fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
-            exec("rm artifact.zip")
+            //fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
+            os.execCommand("unzip "+artifact.name+".zip", function (returnvalue) {
+            // Here you can get the return value
+            });
+            exec("rm " + artifact.name+".zip")
         }
     } catch (error) {
         core.setFailed(error.message)
