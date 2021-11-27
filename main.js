@@ -157,11 +157,11 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            //await exec("wget \""+zip.url+"\" --output-document=artifact.zip")
+            execSync("wget \""+zip.url+"\" --output-document=artifact.zip")
             //console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
-            os.execCommand('wget \"'+zip.url+"\" --output-document="+artifact.name+".zip", function (returnvalue) {
+            //os.execCommand('wget \"'+zip.url+"\" --output-document="+artifact.name+".zip", function (returnvalue) {
             // Here you can get the return value
-            });
+            //});
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
@@ -181,7 +181,8 @@ async function main() {
 
             adm.extractAllTo(dir, true)*/
             //fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
-            os.execCommand("unzip "+artifact.name+".zip", function (returnvalue) {
+            //os.execCommand("unzip "+artifact.name+".zip", function (returnvalue) {
+            execSync("unzip "+artifact.name+".zip");
             // Here you can get the return value
             });
             exec("rm " + artifact.name+".zip")
