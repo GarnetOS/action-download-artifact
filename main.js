@@ -5,6 +5,7 @@ const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
 const { exec } = require("child_process")
+const get = require("async-get-file")
 
 async function main() {
     try {
@@ -144,8 +145,10 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            await exec("wget \""+zip.url+"\" --output-document=artifact.zip")
-            console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
+	    var options = {
+             filename: artifact.name+".zip"
+            }
+            await get(zip.url,options);
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
@@ -154,7 +157,7 @@ async function main() {
             }
             })
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const adm = new AdmZip("artifact.zip")
+            const adm = new AdmZip(artifact.name+".zip")
         
             adm.getEntries().forEach((entry) => {
                 const action = entry.isDirectory ? "creating" : "inflating"
@@ -164,7 +167,7 @@ async function main() {
             })
 
             adm.extractAllTo(dir, true)
-            exec("rm artifact.zip")
+            fs.unlinkSync(artifact.name+".zip")
         }
     } catch (error) {
         core.setFailed(error.message)
