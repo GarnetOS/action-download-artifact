@@ -153,6 +153,7 @@ async function main() {
             await get(zip.url,options).catch(err => {
       	    	console.log(err);
       	    });
+	    console.log("ver4")
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
