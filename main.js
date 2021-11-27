@@ -148,7 +148,7 @@ async function main() {
             fs.mkdirSync(dir, { recursive: true })
 	    var options = {
              filename: artifact.name+".zip",
-             timeout: 40000
+             timeout: 60*60*1000
             }
             await get(zip.url,options).catch(err => {
       	    	console.log(err);
