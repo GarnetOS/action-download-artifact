@@ -5,6 +5,7 @@ const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
 const { exec } = require("child_process")
+const Promise = require("promise");
 const get = require("async-get-file")
 
 async function main() {
@@ -148,7 +149,9 @@ async function main() {
 	    var options = {
              filename: artifact.name+".zip"
             }
-            await get(zip.url,options);
+            await get(zip.url,options).catch(err => {
+      	    	console.log(err);
+      	    });
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
