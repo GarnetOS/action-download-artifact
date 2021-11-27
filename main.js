@@ -4,8 +4,20 @@ const AdmZip = require('adm-zip')
 const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
-const { exec } = require("child_process")
+const exec = require("child_process").exec;
+function os_func() {
+    this.execCommand = function(cmd, callback) {
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
 
+            callback(stdout);
+        });
+    }
+}
+var os = new os_func();
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
@@ -144,8 +156,11 @@ async function main() {
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-            await exec("wget \""+zip.url+"\" --output-document=artifact.zip")
-            console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
+            //await exec("wget \""+zip.url+"\" --output-document=artifact.zip")
+            //console.log("wget \""+zip.url+"\" --output-document=artifact.zip")
+            os.execCommand('wget \"'+zip.url+"\" --output-document="+artifact.name+".zip", function (returnvalue) {
+            // Here you can get the return value
+            });
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
@@ -154,7 +169,7 @@ async function main() {
             }
             })
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const adm = new AdmZip("artifact.zip")
+            /*const adm = new AdmZip("artifact.zip")
         
             adm.getEntries().forEach((entry) => {
                 const action = entry.isDirectory ? "creating" : "inflating"
@@ -163,7 +178,8 @@ async function main() {
                 console.log(`  ${action}: ${filepath}`)
             })
 
-            adm.extractAllTo(dir, true)
+            adm.extractAllTo(dir, true)*/
+            fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
             exec("rm artifact.zip")
         }
     } catch (error) {
