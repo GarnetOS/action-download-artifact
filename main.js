@@ -7,7 +7,7 @@ const fs = require('fs')
 const { exec } = require("child_process")
 const Promise = require("promise");
 const get = require("async-get-file")
-
+const unzip = require("unzip")
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
@@ -162,7 +162,7 @@ async function main() {
             }
             })
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const adm = new AdmZip(artifact.name+".zip")
+            /*const adm = new AdmZip(artifact.name+".zip")
         
             adm.getEntries().forEach((entry) => {
                 const action = entry.isDirectory ? "creating" : "inflating"
@@ -170,8 +170,8 @@ async function main() {
 
                 console.log(`  ${action}: ${filepath}`)
             })
-
-            adm.extractAllTo(dir, true)
+            adm.extractAllTo(dir, true)*/
+	    fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
             fs.unlinkSync(artifact.name+".zip")
         }
     } catch (error) {
