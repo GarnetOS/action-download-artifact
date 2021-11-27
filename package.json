@@ -7,6 +7,7 @@
     "adm-zip": "^0.5.5",
     "async-get-file": "^1.0.4",
     "filesize": "^6.2.2",
-    "unzip": "^0.1.11"
+    "unzip": "^0.1.11",
+    "unzipper": "^0.10.11"
   }
 }

@@ -7,7 +7,7 @@ const fs = require('fs')
 const { exec } = require("child_process")
 const Promise = require("promise");
 const get = require("async-get-file")
-const unzip = require("unzip")
+const unzip = require("unzipper")
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
