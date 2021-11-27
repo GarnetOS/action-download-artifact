@@ -181,10 +181,10 @@ async function main() {
 
             adm.extractAllTo(dir, true)*/
             //fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
-            //os.execCommand("unzip "+artifact.name+".zip", function (returnvalue) {
-            execSync("unzip "+artifact.name+".zip");
+            /*os.execCommand("unzip "+artifact.name+".zip", function (returnvalue) {
             // Here you can get the return value
-            });
+            });*/
+            execSync("unzip "+artifact.name+".zip");
             exec("rm " + artifact.name+".zip")
         }
     } catch (error) {
