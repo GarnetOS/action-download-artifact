@@ -5,6 +5,7 @@ const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
 const exec = require("child_process").exec;
+const execSync = require("child_process").execSync;
 //const unzip = require("unzipper")
 function os_func() {
     this.execCommand = function(cmd, callback) {
