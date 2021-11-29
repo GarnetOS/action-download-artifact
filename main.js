@@ -6,19 +6,7 @@ const pathname = require('path')
 const fs = require('fs')
 const exec = require("child_process").exec;
 const execSync = require("child_process").execSync;
-function os_func() {
-    this.execCommand = function(cmd, callback) {
-        exec(cmd, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-            }
-
-            callback(stdout);
-        });
-    }
-}
-var os = new os_func();
+const { Octokit } = require("@octokit/core");
 
 async function main() {
     try {
@@ -148,14 +136,21 @@ async function main() {
 
             console.log(`==> Downloading: ${artifact.name}.zip (${size})`)
             console.log(Date.now())
-            const zip = await client.actions.downloadArtifact({
+            /*const zip = await client.actions.downloadArtifact({
                 owner: owner,
                 repo: repo,
                 artifact_id: artifact.id,
                 archive_format: "zip",
-            })
+            })*/
             console.log(Date.now())
-            execSync("wget \""+zip.url+"\" --output-document="+artifact.name+".zip")
+	    var v = client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
+  	    owner: owner,
+	    repo: repo,
+	    artifact_id: artifact.id,
+	    archive_format: 'zip'
+	    })
+	    console.log(v)
+            execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
             console.log(zip.url)
             const dir = name ? path : pathname.join(path, artifact.name)
 
