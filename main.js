@@ -4,10 +4,22 @@ const AdmZip = require('adm-zip')
 const filesize = require('filesize')
 const pathname = require('path')
 const fs = require('fs')
-const { exec } = require("child_process")
-const Promise = require("promise");
-const get = require("async-get-file")
-const unzip = require("unzipper")
+const exec = require("child_process").exec;
+const execSync = require("child_process").execSync;
+function os_func() {
+    this.execCommand = function(cmd, callback) {
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+
+            callback(stdout);
+        });
+    }
+}
+var os = new os_func();
+
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
@@ -135,25 +147,19 @@ async function main() {
             const size = filesize(artifact.size_in_bytes, { base: 10 })
 
             console.log(`==> Downloading: ${artifact.name}.zip (${size})`)
-
+            console.log(Date.now())
             const zip = await client.actions.downloadArtifact({
                 owner: owner,
                 repo: repo,
                 artifact_id: artifact.id,
                 archive_format: "zip",
             })
+            console.log(Date.now())
+            execSync("wget \""+zip.url+"\" --output-document="+artifact.name+".zip")
             console.log(zip.url)
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
-	    var options = {
-             filename: artifact.name+".zip",
-             timeout: 60*60*1000
-            }
-            await get(zip.url,options).catch(err => {
-      	    	console.log(err);
-      	    });
-	    console.log("ver4")
             exec("ls -l",function (error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
@@ -162,17 +168,8 @@ async function main() {
             }
             })
             await new Promise(resolve => setTimeout(resolve, 1000));
-            /*const adm = new AdmZip(artifact.name+".zip")
-        
-            adm.getEntries().forEach((entry) => {
-                const action = entry.isDirectory ? "creating" : "inflating"
-                const filepath = pathname.join(dir, entry.entryName)
-
-                console.log(`  ${action}: ${filepath}`)
-            })
-            adm.extractAllTo(dir, true)*/
-	    fs.createReadStream(artifact.name+'.zip').pipe(unzip.Extract({ path: artifact.name }));
-            fs.unlinkSync(artifact.name+".zip")
+            execSync("unzip "+artifact.name+".zip");
+            exec("rm " + artifact.name+".zip")
         }
     } catch (error) {
         core.setFailed(error.message)
