@@ -19,6 +19,7 @@ function os_func() {
     }
 }
 var os = new os_func();
+
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
