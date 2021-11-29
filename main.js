@@ -143,7 +143,7 @@ async function main() {
                 archive_format: "zip",
             })*/
             console.log(Date.now())
-	    var v = client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
+	    var v = await client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
   	    owner: owner,
 	    repo: repo,
 	    artifact_id: artifact.id,
