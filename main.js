@@ -6,7 +6,6 @@ const pathname = require('path')
 const fs = require('fs')
 const exec = require("child_process").exec;
 const execSync = require("child_process").execSync;
-//const unzip = require("unzipper")
 function os_func() {
     this.execCommand = function(cmd, callback) {
         exec(cmd, (error, stdout, stderr) => {
@@ -147,13 +146,14 @@ async function main() {
             const size = filesize(artifact.size_in_bytes, { base: 10 })
 
             console.log(`==> Downloading: ${artifact.name}.zip (${size})`)
-
+            console.log(Date.now())
             const zip = await client.actions.downloadArtifact({
                 owner: owner,
                 repo: repo,
                 artifact_id: artifact.id,
                 archive_format: "zip",
             })
+            console.log(Date.now())
             execSync("wget \""+zip.url+"\" --output-document="+artifact.name+".zip")
             console.log(zip.url)
             const dir = name ? path : pathname.join(path, artifact.name)
