@@ -142,12 +142,13 @@ async function main() {
                 archive_format: "zip",
             })*/
             console.log(Date.now())
-	    var v = await client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
+	    /*var v = await client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
   	    owner: owner,
 	    repo: repo,
 	    artifact_id: artifact.id,
 	    archive_format: 'zip'
-	    })
+	    })*/
+	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")
 	    console.log(Date.now())
 	    console.log(v)
             execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
