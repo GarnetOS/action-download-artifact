@@ -150,7 +150,11 @@ async function main() {
 	    })*/
 	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si")
 	    console.log(Buffer.from(v).toString())
-	    console.log(execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'"))
+	    try{
+		execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")    
+	    }catch(err){
+		console.log("stderr", err.stderr.toString())    
+	    }
 	    console.log(Date.now())
 	    console.log(v)
             execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
