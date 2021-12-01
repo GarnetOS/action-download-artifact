@@ -141,14 +141,14 @@ async function main() {
 	    console.log(Buffer.from(v).toString())
 	    v = child_process.spawnSync("grep", ["-oP", "'location: \K.*'"],{input: Buffer.from(v).toString()})*/
 	    try{
-		console.log("bash -c \"curl -H "+("\"".replace(/[\\$'"]/g, "\\$&"))+"Authorization: token "+token+("\"".replace(/[\\$'"]/g, "\\$&"))+" https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \\K.*'| xargs -n1 wget -O "+artifact.id+".zip -q\"")
-		execSync("bash -c \"curl -H "+("\"".replace(/[\\$'"]/g, "\\$&"))+"Authorization: token "+token+("\"".replace(/[\\$'"]/g, "\\$&"))+" https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \\K.*'| xargs -n1 wget -O "+artifact.id+".zip -q\"")    
+		console.log("bash -c \"curl -H "+("\"".replace(/[\\$'"]/g, "\\$&"))+"Authorization: token "+token+("\"".replace(/[\\$'"]/g, "\\$&"))+" https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \\K.*'| xargs -n1 wget -O "+artifact.name+".zip -q\"")
+		execSync("bash -c \"curl -H "+("\"".replace(/[\\$'"]/g, "\\$&"))+"Authorization: token "+token+("\"".replace(/[\\$'"]/g, "\\$&"))+" https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \\K.*'| xargs -n1 wget -O "+artifact.name+".zip -q\"")    
 	    }catch(err){
 		console.log("stderr", err.stderr.toString())    
 	    }
 	    console.log(Date.now())
-	    console.log(v)
-            execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
+	    //console.log(v)
+            //execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
             console.log(zip.url)
             const dir = name ? path : pathname.join(path, artifact.name)
 
