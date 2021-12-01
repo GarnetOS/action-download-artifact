@@ -148,7 +148,9 @@ async function main() {
 	    artifact_id: artifact.id,
 	    archive_format: 'zip'
 	    })*/
-	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")
+	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si")
+	    console.log(v)
+	    v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")
 	    console.log(Date.now())
 	    console.log(v)
             execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
