@@ -161,7 +161,8 @@ async function main() {
             }
             })
             await new Promise(resolve => setTimeout(resolve, 1000));
-            execSync("unzip "+artifact.name+".zip");
+            console.log(execSync("unzip "+artifact.name+".zip -d "+dir));
+	    console.log(execSync("ls -l"))
             exec("rm " + artifact.name+".zip")
         }
     } catch (error) {
