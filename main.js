@@ -149,7 +149,7 @@ async function main() {
 	    console.log(Date.now())
 	    //console.log(v)
             //execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
-            console.log(zip.url)
+            //console.log(zip.url)
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })
