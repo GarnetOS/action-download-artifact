@@ -6,6 +6,7 @@ const pathname = require('path')
 const fs = require('fs')
 const exec = require("child_process").exec;
 const execSync = require("child_process").execSync;
+const child_process = require("child_process");
 const { Octokit } = require("@octokit/core");
 
 async function main() {
@@ -135,26 +136,15 @@ async function main() {
             const size = filesize(artifact.size_in_bytes, { base: 10 })
 
             console.log(`==> Downloading: ${artifact.name}.zip (${size})`)
-            /*const zip = await client.actions.downloadArtifact({
-                owner: owner,
-                repo: repo,
-                artifact_id: artifact.id,
-                archive_format: "zip",
-            })*/
             console.log(Date.now())
-	    /*var v = await client.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
-  	    owner: owner,
-	    repo: repo,
-	    artifact_id: artifact.id,
-	    archive_format: 'zip'
-	    })*/
 	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si")
 	    console.log(Buffer.from(v).toString())
-	    try{
+	    v = child_process.spawnSync("grep", ["-oP", "'location: \K.*'"],{input: Buffer.from(v).toString()})
+	    /*try{
 		execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")    
 	    }catch(err){
 		console.log("stderr", err.stderr.toString())    
-	    }
+	    }*/
 	    console.log(Date.now())
 	    console.log(v)
             execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
