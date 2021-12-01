@@ -137,14 +137,14 @@ async function main() {
 
             console.log(`==> Downloading: ${artifact.name}.zip (${size})`)
             console.log(Date.now())
-	    var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si")
+	    /*var v = execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si")
 	    console.log(Buffer.from(v).toString())
-	    v = child_process.spawnSync("grep", ["-oP", "'location: \K.*'"],{input: Buffer.from(v).toString()})
-	    /*try{
-		execSync("curl -H \"Authorization: token "+token+"\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'")    
+	    v = child_process.spawnSync("grep", ["-oP", "'location: \K.*'"],{input: Buffer.from(v).toString()})*/
+	    try{
+		execSync("bash -c \"curl -H \\"Authorization: token "+token+"\\"   https://api.github.com/repos/"+owner+"/"+repo+"/actions/artifacts/"+artifact.id+"/zip -si | grep -oP 'location: \K.*'| xargs -n1 wget -O "+artifact.id+".zip -q"\"")    
 	    }catch(err){
 		console.log("stderr", err.stderr.toString())    
-	    }*/
+	    }
 	    console.log(Date.now())
 	    console.log(v)
             execSync("wget \""+v+"\" --output-document="+artifact.name+".zip")
