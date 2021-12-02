@@ -163,6 +163,7 @@ async function main() {
             await new Promise(resolve => setTimeout(resolve, 1000));
             console.log(Buffer.from(execSync("unzip "+artifact.name+".zip -d "+dir)).toString());
 	    console.log(Buffer.from(execSync("ls -l")).toString())
+	    console.log(Buffer.from(execSync("pwd")).toString())
             exec("rm " + artifact.name+".zip")
         }
     } catch (error) {
